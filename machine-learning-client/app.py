@@ -35,7 +35,7 @@ except Exception as e:
 
 
 def parse_phrase_from_voice(audio):
-    #takes audio input from frontend and generates a phrase list from it using ML
+    #takes audio input and generates a phrase list from it using ML
     return
 #access and update the database based on calls from the frontEnd
 def store_sentiment(user_name, phrase, sentiment):
