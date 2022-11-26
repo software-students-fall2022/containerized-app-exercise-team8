@@ -34,13 +34,24 @@ except Exception as e:
 # each user will have to be treated as unique or we will have to update their entries
 
 
+def getForm(form):
+    # overall function to parse entries by the user
+    # uses parse_phrase_from_voice() and check_new_user()
+    return
+def post_add_record():
+    # function to save a user's formatted input and sentiment to the db
+    return
+def post_delete_record():
+    # function to delete a record from the db
+    # form = request.form
+    # print(form)
+    # db.songs.delete_one({
+    #     '_id': ObjectId(form['mongoId'])
+    # })
+    return
+
 def parse_phrase_from_voice(audio):
     #takes audio input and generates a phrase list from it using ML
-    return
-#access and update the database based on calls from the frontEnd
-def store_sentiment(user_name, phrase, sentiment):
-    #store the sentiment associated with a user's phrase along with the rest of their phrases
-    # into the db
     return
 def calculate_sentiment(phrase):
     #calculate the sentiment associated with a phrase input
