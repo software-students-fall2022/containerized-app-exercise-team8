@@ -19,3 +19,6 @@ services:
     image: mongo:4.0-xenial # use a recent version of the official MongoDB image on Docker Hub
     ports:
       - 27017:27017 # map port 27017 of host machine to port 27017 of container
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
