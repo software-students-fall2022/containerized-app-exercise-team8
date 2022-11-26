@@ -1,0 +1,22 @@
+p, button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+result {
+    display: flex;
+    background-color: white;
+    height: 10em;
+    width: 50em;
+    font-size:1em;
+    font-weight: bold;
+    justify-content: center;
+    align-items: left;
+    align-self: left;
+    padding: 1em;
+    margin: auto;
+    border-radius: 10px;
+    border: 0.2em solid blue;
+}
