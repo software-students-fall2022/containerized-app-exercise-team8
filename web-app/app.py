@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route("/")
 def sentimentGuesser():
-    return "<p>Press the microphone button and start speaking!</p>"
+    return render_template("homePage.html")
 
