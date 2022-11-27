@@ -1,5 +1,11 @@
+from flask import Flask
+from flask import request
+from flask import render_template
+import os
 from dotenv import dotenv_values
 import pymongo
+
+
 
 # load credentials and configuration options from .env file
 # if you do not yet have a file named .env, make one based on the template in env.example
@@ -23,6 +29,22 @@ except Exception as e:
     print(' *', "Failed to connect to MongoDB at", config['MONGO_URI'])
     print('Database connection error:', e) # debug
 
+
+
+
+app = Flask(__name__)
+
+@app.route("/", methods=['POST', 'GET'])
+def index():
+    if request.method == "POST":
+        f = request.files['audio_data']
+        with open('audio.wav', 'wb') as audio:
+            f.save(audio)
+        print('file uploaded successfully')
+
+        return render_template('index.html', request="POST")
+    else:
+        return render_template("index.html")
 
 
 # phrase can be a list input of space-separated words said by user, parsed by us
