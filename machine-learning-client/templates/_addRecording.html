@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<form action="upload" method="POST">
+<form action="upload" method="POST" enctype="multipart/form-data">
 
     <label>
         Name: 
@@ -8,8 +8,8 @@
     </label>
 
     <label>
-        Audio File (.WAV)
-        <input type="file" name="audioFile">
+        Audio File (.wav)
+        <input type="file" name="audioFile" accept = ".wav">
     </label>
 
     <input type="submit" value="Submit">

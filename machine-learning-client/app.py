@@ -4,8 +4,10 @@ from flask import render_template
 import os
 from dotenv import dotenv_values
 import pymongo
-
-ALLOWED_EXTENSIONS = {"wav", "WAV"} #can optionally add more once we test our modules further
+from bs4 import BeautifulSoup
+import speech_recognition as sr
+#from werkzeug import secure_filename
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # # load credentials and configuration options from .env file
 # # if you do not yet have a file named .env, make one based on the template in env.example
@@ -34,12 +36,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=['POST', 'GET'])
 def index():
-    if request.method == "POST":
-        f = request.files['audio_data']
-        with open('audio.wav', 'wb') as audio:
-            f.save(audio)
-        print('file uploaded successfully')
-
+    if request.method == "POST": # time permitting: add logic to acknowledge their previous submission
         return render_template('index.html', request="POST")
     else:
         return render_template("index.html")
@@ -47,6 +44,19 @@ def index():
 @app.route("/upload", methods = ['POST', 'GET'])
 def upload():
     if request.method == "POST":
+        if 'audioFile' in request.files:
+            f = request.files['audioFile']
+            f.save(f.filename)
+            #print(request.files)
+
+            recog_text = parse_phrase_from_voice(f.filename) # string translated from the file
+            sentiment = calculate_sentiment(recog_text)
+
+            print('file uploaded successfully')
+            print(recog_text)
+            print(sentiment)
+        #print("posting")
+        print(request.files)
         return render_template('upload.html')
     else:
         return render_template('index.html')
@@ -60,24 +70,23 @@ def upload():
 # user_name --> {phrase : sentiment, phrase2 : sentiment2, etc} (dict structure)
 # each user will have to be treated as unique or we will have to update their entries
 
+# def add_record(user_name, transcribed_audio, sentiment_dict):
+#     # function to save a user's formatted input and sentiment to the db
+#     return
 
-def getForm(form):
-    # overall function to parse entries by the user
-    # uses parse_phrase_from_voice() and check_new_user()
-    return
-
-def post_add_record():
-    # function to save a user's formatted input and sentiment to the db
-    return
-
-def parse_phrase_from_voice(audio):
+def parse_phrase_from_voice(filename):
+    # read the entire audio file
     #takes audio input and generates a phrase list from it using ML
-    return
-
+    r = sr.Recognizer()
+    with sr.AudioFile(filename) as source:
+        audio = r.record(source)  
+    return r.recognize_google(audio)
+    
 def calculate_sentiment(phrase):
+    sid_obj = SentimentIntensityAnalyzer()
     #calculate the sentiment associated with a phrase input
-    return
+    return sid_obj.polarity_scores(phrase)
 
-def check_new_user(user_name):
-    # return a boolean representing whether the user is new or existing, will impact how we update the db
-    return
+# def check_new_user(user_name):
+#     # return a boolean representing whether the user is new or existing, will impact how we update the db
+#     return
