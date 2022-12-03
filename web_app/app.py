@@ -4,7 +4,7 @@ import speech_recognition as sr
 app = Flask(__name__)
 
 @app.route("/", methods = ['GET', 'POST'])
-def sentimentGuesser():
+def sentiment_guesser():
     #file = request.files["file"]
     # recognizer = sr.Recognizer()
 
