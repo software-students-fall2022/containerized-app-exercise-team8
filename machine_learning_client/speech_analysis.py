@@ -11,7 +11,7 @@ with mic as source:
     audio = r.listen(source)
 
 
-def getSentiment(text):
+def get_sentiment(text):
     endpoint = "https://api.us-east.natural-language-understanding.watson.cloud.ibm.com/instances/c816632f-8712-4009-88e2-be8c01be24a3"
 
 
