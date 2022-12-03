@@ -1,0 +1,54 @@
+<head>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<p>Use the 'Start' and 'Stop' buttons to record a message!</p>
+<body>
+    <button id = 'start_recording'>Start Recording</button>
+    <button id = 'stop_recording'>Stop Recording</button>
+
+    <script> src = 'key.js' </script>
+    <script>
+        document.querySelector('#start_recording').addEventListener('click', async function init(e) {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true
+            })
+            const audioTracks = stream.getAudioTracks()
+            const track = audioTracks[0]
+            document.querySelector('audio').srcObject = stream
+        } catch (error) {
+            alert(`${error.name}`)
+            console.error(error)
+        }
+        })    
+        // navigator.mediaDevices.getUserMedia({
+        //     audio: true
+        // })
+    
+        // document.querySelector('#start_recording').addEventListener('click', async (e) => {
+        //     const stream = await navigator.mediaDevices.getUserMedia({
+        //     audio: true
+        //     })
+        //     document.querySelector('audio').srcObject = stream
+        // })
+        // document.querySelector('#stop_recording').removeEventListener('click', None
+        //     //document.querySelector('audio').srcObject = stream
+        // )        
+    //     start_recording.onclick = e => {
+    //     console.log('Recording are started.');
+    //     start_recording.disabled = true;
+    //     stop_recording.disabled = false;
+    //     //audioChunks = [];
+    //     rec.start();
+    // };
+
+    //     stop_recording.onclick = e => {
+    //         console.log("Recording are stopped.");
+    //         start_recording.disabled = false;
+    //         stop_recording.disabled = true;
+    //         rec.stop();
+    //     };        
+    </script>
+    <p>Based on your speech, we're guessing that your sentiment is...</p>
+    <result>result</result>
+</body>
