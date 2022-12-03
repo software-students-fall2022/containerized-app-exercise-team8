@@ -19,17 +19,17 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 #     app.debug = True # debug mnode
 
 # # connect to the database
-# cxn = pymongo.MongoClient(config['MONGO_URI'], serverSelectionTimeoutMS=5000)
-# try:
+cxn = pymongo.MongoClient(config['MONGO_URI'], serverSelectionTimeoutMS=5000)
+try:
 #     # verify the connection works by pinging the database
-#     cxn.admin.command('ping') # The ping command is cheap and does not require auth.
-#     db = cxn[config['MONGO_DBNAME']] # store a reference to the database
-#     print(' *', 'Connected to MongoDB!') # if we get here, the connection worked!
-# except Exception as e:
+    cxn.admin.command('ping') # The ping command is cheap and does not require auth.
+    db = cxn[config['MONGO_DBNAME']] # store a reference to the database
+    print(' *', 'Connected to MongoDB!') # if we get here, the connection worked!
+except Exception as e:
 #     # the ping command failed, so the connection is not available.
-#     # render_template('error.html', error=e) # render the edit template
-#     print(' *', "Failed to connect to MongoDB at", config['MONGO_URI'])
-#     print('Database connection error:', e) # debug
+    render_template('error.html', error=e) # render the edit template
+    print(' *', "Failed to connect to MongoDB at", config['MONGO_URI'])
+    print('Database connection error:', e) # debug
 
 
 app = Flask(__name__)
@@ -70,9 +70,15 @@ def upload():
 # user_name --> {phrase : sentiment, phrase2 : sentiment2, etc} (dict structure)
 # each user will have to be treated as unique or we will have to update their entries
 
-# def add_record(user_name, transcribed_audio, sentiment_dict):
-#     # function to save a user's formatted input and sentiment to the db
-#     return
+def add_record(user_name, transcribed_audio, sentiment_dict):
+    # function to save a user's formatted input and sentiment to the db
+    if (check_new_user(user_name)):
+        create_data={user_name:{'transcribed_audio': transcribed_audio, 'sentiment': sentiment_dict}}
+        db.sentiment_analyzer.insert_one(create_data)
+    else:
+        #user already exists
+        print('user already exists')
+    return render_template('homePage.html')
 
 def parse_phrase_from_voice(filename):
     # read the entire audio file
@@ -87,6 +93,10 @@ def calculate_sentiment(phrase):
     #calculate the sentiment associated with a phrase input
     return sid_obj.polarity_scores(phrase)
 
-# def check_new_user(user_name):
-#     # return a boolean representing whether the user is new or existing, will impact how we update the db
-#     return
+def check_new_user(user):
+    # return a boolean representing whether the user is new or existing, will impact how we update the db
+    # returns True if user does not yet exist, False if they do
+    docs= db.sentiment_analyzer.find({'user_name':user})
+    if len(docs)>=1:
+        return False
+    return True
