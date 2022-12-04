@@ -1,22 +1,18 @@
-p, button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
+.button {
+    background-color: royalblue;
+    color: white;
+    border-radius: 5px;
+    border: solid royalblue;
+    margin-left: 0em;
+    height: 2em;
 }
 
-result {
-    display: flex;
-    background-color: white;
-    height: 10em;
-    width: 50em;
-    font-size:1em;
-    font-weight: bold;
-    justify-content: center;
-    align-items: left;
-    align-self: left;
-    padding: 1em;
-    margin: auto;
-    border-radius: 10px;
-    border: 0.2em solid blue;
+label {
+    margin-left: 1.5em;
+    line-height: 3em;
+}
+
+input {
+    margin-left: 2em;
+    height: 2em;
 }
