@@ -9,6 +9,6 @@ pymongo==3.11.3
 python-dotenv==0.16.0
 Werkzeug==1.0.1
 bs4==0.0.1
-SpeechRecognition==3.9.0
+SpeechRecognition==3.8.1
 vaderSentiment==3.3.2
 
