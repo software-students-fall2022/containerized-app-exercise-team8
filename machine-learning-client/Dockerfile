@@ -14,20 +14,7 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 # by default Docker containers are closed off to the external world
 # Make port 80 available to the world outside this container
 
-# Code given by the professor to expose audio to mac (for use in Docker)
-RUN apt-get update && apt-get install -y \
-    vorbis-tools \
-    sox \
-    alsa-utils \
-    libasound2 \
-    libasound2-plugins \
-    pulseaudio \
-    pulseaudio-utils \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/* 
-
-
-EXPOSE 80
+EXPOSE 2000
 # Define an environment variable... this will be available to programs running inside the container
 ENV NAME World
 

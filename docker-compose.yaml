@@ -9,7 +9,7 @@ services:
   machine-learning-client:
     build: ./machine-learning-client
     ports:
-      - 5000:5000
+      - 2000:2000
     environment:
       - MONGO_DBNAME=example
       - MONGO_URI="mongodb://admin:secret@localhost:27017/example?authSource=admin&retryWrites=true&w=majority"

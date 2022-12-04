@@ -49,14 +49,15 @@ def upload():
             f.save(f.filename)
             #print(request.files)
 
+            user_name = request.form['userName']
+
             recog_text = parse_phrase_from_voice(f.filename) # string translated from the file
             sentiment = calculate_sentiment(recog_text)
-
-            print('file uploaded successfully')
+            print(add_record(user_name,recog_text,sentiment))
             print(recog_text)
             print(sentiment)
         #print("posting")
-        print(request.files)
+        #print(request.files)
         return render_template('upload.html')
     else:
         return render_template('index.html')
@@ -76,9 +77,9 @@ def add_record(user_name, transcribed_audio, sentiment_dict):
         create_data={user_name:{'transcribed_audio': transcribed_audio, 'sentiment': sentiment_dict}}
         db.sentiment_analyzer.insert_one(create_data)
     else:
-        #user already exists
+        #user already exists, we want unique statements
         print('user already exists')
-    return render_template('homePage.html')
+    return 'record successfully added for ' + str(user_name)
 
 def parse_phrase_from_voice(filename):
     # read the entire audio file
