@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request
 from pymongo import MongoClient
+from dotenv import dotenv_values
 
 # set up connection to database & call the database "db"
 # # connect to the database
+config = dotenv_values(".env")
+
 cxn = MongoClient(config['MONGO_URI'], serverSelectionTimeoutMS=5000)
 try:
     # verify the connection works by pinging the database
