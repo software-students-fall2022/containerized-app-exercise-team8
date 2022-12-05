@@ -18,6 +18,5 @@ EXPOSE 2000
 # Define an environment variable... this will be available to programs running inside the container
 ENV NAME World
 
-
 # Run app.py when the container launches
-CMD ["python", "app.py"]
+CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0", "--port=2000" ]

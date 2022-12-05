@@ -14,6 +14,8 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 config = dotenv_values(".env")
 
+app = Flask(__name__)
+
 # turn on debugging if in development mode
 if config['FLASK_ENV'] == 'development':
     # turn on debugging, if in development
@@ -33,7 +35,6 @@ except Exception as e:
     print('Database connection error:', e) # debug
 
 
-app = Flask(__name__)
 
 @app.route("/", methods=['POST', 'GET'])
 def index():
@@ -102,3 +103,6 @@ def check_new_user(user):
     if len(docs)>=1:
         return False
     return True
+
+if __name__ == "__main__":
+    app.run(debug=True)
