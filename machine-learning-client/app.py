@@ -76,7 +76,7 @@ def upload():
 def add_record(user_name, transcribed_audio, sentiment_dict):
     # function to save a user's formatted input and sentiment to the db
     # if (check_new_user(user_name)):
-    create_data={user_name:{'transcribed_audio': transcribed_audio, 'sentiment': sentiment_dict}}
+    create_data={'user_name':user_name,'transcribed_audio': transcribed_audio, 'sentiment': sentiment_dict}
     db.sentiment_analyzer.insert_one(create_data)
     # else:
     #     #user already exists, we want unique statements
