@@ -2,7 +2,10 @@
     <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
-    <p>Your Name: {{userName}}</p>
-    <p>The Audio File Being Analyzed Was: {{transcribedAudio}}</p>
-    <p>The Sentiment Detected Was: {{sentiment}}</p>
+    {% if nothingFound %} {{nothingFound}} {% endif %}
+        {% if somethingFound %}
+        <p>Your Name: {{userName}}</p>
+        <p>The Audio File Being Analyzed Was: {{transcribedAudio}}</p>
+        <p>The Sentiment Detected Was: {{sentiment}}</p>
+    {% endif %}
 </body>
