@@ -1,4 +1,4 @@
-version: "0.1"
+version: "3.7"
 services:
   web-app:
     build: ./web-app # build the Docker image from the Dockerfile in the front-end directory
@@ -13,6 +13,7 @@ services:
     environment:
       - MONGO_DBNAME=example
       - MONGO_URI="mongodb://admin:secret@27017:27017/example?authSource=admin&retryWrites=true&w=majority"
+      #- MONGO_URI = 'mongodb://mongoDB/myApp'
     depends_on:
       - db
   db:
