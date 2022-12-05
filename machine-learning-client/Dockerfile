@@ -1,6 +1,6 @@
 # in Docker, it is common to base a new image on a previously-created image
 # Use an official Python runtime image as a parent image to base this image on
-FROM python:2.7-slim
+FROM python:3.7
 
 # Set the working directory within the image to /app
 WORKDIR /app
@@ -19,4 +19,4 @@ EXPOSE 2000
 ENV NAME World
 
 # Run app.py when the container launches
-CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0", "--port=2000" ]
+CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0", "--port=2000"]

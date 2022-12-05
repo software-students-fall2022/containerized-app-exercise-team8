@@ -75,12 +75,12 @@ def upload():
 
 def add_record(user_name, transcribed_audio, sentiment_dict):
     # function to save a user's formatted input and sentiment to the db
-    if (check_new_user(user_name)):
-        create_data={user_name:{'transcribed_audio': transcribed_audio, 'sentiment': sentiment_dict}}
-        db.sentiment_analyzer.insert_one(create_data)
-    else:
-        #user already exists, we want unique statements
-        print('user already exists')
+    # if (check_new_user(user_name)):
+    create_data={user_name:{'transcribed_audio': transcribed_audio, 'sentiment': sentiment_dict}}
+    db.sentiment_analyzer.insert_one(create_data)
+    # else:
+    #     #user already exists, we want unique statements
+    #     print('user already exists')
     return 'record successfully added for ' + str(user_name)
 
 def parse_phrase_from_voice(filename):
@@ -96,13 +96,13 @@ def calculate_sentiment(phrase):
     #calculate the sentiment associated with a phrase input
     return sid_obj.polarity_scores(phrase)
 
-def check_new_user(user):
-    # return a boolean representing whether the user is new or existing, will impact how we update the db
-    # returns True if user does not yet exist, False if they do
-    docs= db.sentiment_analyzer.find({'user_name':user})
-    if len(docs)>=1:
-        return False
-    return True
+# def check_new_user(user):
+#     # return a boolean representing whether the user is new or existing, will impact how we update the db
+#     # returns True if user does not yet exist, False if they do
+#     docs= db.sentiment_analyzer.find({'user_name':user})
+#     if len(docs)>=1:
+#         return False
+#     return True
 
 if __name__ == "__main__":
     app.run(debug=True)
