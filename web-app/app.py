@@ -22,7 +22,7 @@ def displaySavedResults():
     if(request.method == "GET"):
         return render_template("enterUserInfo.html")
     else:
-        userName = request.args.userName
+        userName = request.form["userName"]
         userDocument = db.sentiment_analyzer.find({'user_name':userName})[0]
         transcribedAudio = userDocument.transcribed_audio
         sentiment = userDocument.sentiment
