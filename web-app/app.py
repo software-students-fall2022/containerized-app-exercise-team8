@@ -36,7 +36,19 @@ def displaySavedResults():
             return render_template("displayUserResults.html", nothingFound="Sorry :( no record saved for this user!")
         else:
             transcribedAudio = userDocument["transcribed_audio"]
-            sentiment = userDocument["sentiment"]
+            sentimentObject = userDocument["sentiment"]
+            if sentimentObject["compound"] == 0:
+                sentiment = "You're feeling pretty neutral--seems like things are neither here nor there for you"
+            elif sentimentObject["compound"] < 0:
+                if sentimentObject["compound"] < -0.5:
+                    sentiment = "Uh oh, you're feeling pretty negative today... do you want to talk about it?"
+                elif sentimentObject["compound"] >= -0.5:
+                    sentiment = "You're feeling a bit negative today, did something happen?"
+            else:
+                if sentimentObject["compound"] > 0.5:
+                    sentiment = "Wow, you're feeling so positive today! Or are you just a positive person in general?"
+                elif sentimentObject["compound"] <= 0.5:
+                    sentiment = "You're kinda positive right now, so does that mean you're in a good mood today?"
             return render_template("displayUserResults.html", somethingFound=1, userName=userName, transcribedAudio=transcribedAudio, sentiment=sentiment)
 
 
