@@ -35,11 +35,22 @@ def displaySavedResults():
         return render_template("enterUserInfo.html")
     else:
         userName = request.form["userName"]
-        userDocuments = db.sentiment_analyzer.find({'user_name':userName})
-        if len(list(userDocuments.clone())) == 0:
+        userDocument = db.sentiment_analyzer.find_one({'user_name':userName})
+        if userDocument is None:
             return render_template("displayUserResults.html", nothingFound="Sorry :( no record saved for this user!")
         else:
-            userDocument = userDocuments[0]
-            transcribedAudio = userDocument.transcribed_audio
-            sentiment = userDocument.sentiment
+            transcribedAudio = userDocument.user_name.transcribed_audio
+            sentimentObject = userDocument.user_name.sentiment
+            if sentimentObject.compound == 0:
+                sentiment = "You're feeling pretty neutral--seems like things are neither here nor there for you"
+            elif sentimentObject.compound < 0:
+                if sentimentObject < -0.5:
+                    sentiment = "Uh oh, you're feeling pretty negative today... do you want to talk about it?"
+                elif sentimentObject >= -0.5:
+                    sentiment = "You're feeling a bit negative today, did something happen?"
+            else:
+                if sentimentObject > 0.5:
+                    sentiment = "Wow, you're feeling so positive today! Or are you just a positive person in general?"
+                elif sentimentObject <= 0.5:
+                    sentiment = "You're kinda positive right now, so does that mean you're in a good mood today?"
             return render_template("displayUserResults.html", somethingFound=1, userName=userName, transcribedAudio=transcribedAudio, sentiment=sentiment)
