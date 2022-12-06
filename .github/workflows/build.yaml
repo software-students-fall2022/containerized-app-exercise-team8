@@ -1,3 +1,5 @@
+name: Build
+on: [push]
 version: "3.7"
 services:
   web-app:
