@@ -1,0 +1,47 @@
+name: Machine Learning Client
+on: [push]
+
+env:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.11"] 
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Test with pytest
+        run: |
+          pytest machine-learning-client/tests/test.py       
+# version: "3.7"
+# services:
+#   web-app:
+#     build: ./web-app # build the Docker image from the Dockerfile in the front-end directory
+#     ports:
+#       - 2001:2001 # map port 2001 of host machine to port 3000 of container
+#     depends_on:
+#       - mongo
+#   mongo:
+#     image: mongo
+#     restart: always
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: root
+#       MONGO_INITDB_ROOT_PASSWORD: example
+#   machine-learning-client:
+#     build: ./machine-learning-client
+#     ports:
+#       - 2000:2000
+#     depends_on:
+#       - mongo
