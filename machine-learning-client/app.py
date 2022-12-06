@@ -19,47 +19,54 @@ app = Flask(__name__)
 # turn on debugging if in development mode
 if config['FLASK_ENV'] == 'development':
     # turn on debugging, if in development
-    app.debug = True # debug mnode
+    app.debug = True  # debug mnode
 
 # # connect to the database
-cxn = pymongo.MongoClient(config['MONGO_URI'], serverSelectionTimeoutMS=5000)
-try:
-#     # verify the connection works by pinging the database
-    cxn.admin.command('ping') # The ping command is cheap and does not require auth.
-    db = cxn[config['MONGO_DBNAME']] # store a reference to the database
-    print(' *', 'Connected to MongoDB!') # if we get here, the connection worked!
-except Exception as e:
-#     # the ping command failed, so the connection is not available.
-    #render_template('error.html', error=e) # render the edit template
-    print(' *', "Failed to connect to MongoDB at", config['MONGO_URI'])
-    print('Database connection error:', e) # debug
+MONGO_URI = "mongodb://mongo:27017"
+COLLECTION_NAME = 'sentiment_analyzer'
 
+try:
+    client = pymongo.MongoClient(
+        MONGO_URI, serverSelectionTimeoutMS=30000, username="root", password="example")
+    db = client[config['MONGO_DBNAME']]
+    collection = client[config['MONGO_DBNAME']][COLLECTION_NAME]
+    # Verify the connection works by pinging the database
+    client.admin.command('ping')
+    # if we get here, the connection worked!
+    print(' *', 'Connected to MongoDB!')
+except Exception as e:
+    # The ping command failed, so the connection is not available.
+    # render_template('error.html', error=e) # render the edit template
+    print(' *', "Failed to connect to MongoDB at", config['MONGO_URI'])
+    print('Database connection error:', e)  # debug
 
 
 @app.route("/", methods=['POST', 'GET'])
 def index():
-    if request.method == "POST": # time permitting: add logic to acknowledge their previous submission
+    if request.method == "POST":  # time permitting: add logic to acknowledge their previous submission
         return render_template('index.html', request="POST")
     else:
         return render_template("index.html")
 
-@app.route("/upload", methods = ['POST', 'GET'])
+
+@app.route("/upload", methods=['POST', 'GET'])
 def upload():
     if request.method == "POST":
         if 'audioFile' in request.files:
             f = request.files['audioFile']
             f.save(f.filename)
-            #print(request.files)
+            # print(request.files)
 
             user_name = request.form['userName']
 
-            recog_text = parse_phrase_from_voice(f.filename) # string translated from the file
+            recog_text = parse_phrase_from_voice(
+                f.filename)  # string translated from the file
             sentiment = calculate_sentiment(recog_text)
-            print(add_record(user_name,recog_text,sentiment))
+            print(add_record(user_name, recog_text, sentiment))
             print(recog_text)
             print(sentiment)
-        #print("posting")
-        #print(request.files)
+        # print("posting")
+        # print(request.files)
         return render_template('upload.html')
     else:
         return render_template('index.html')
@@ -76,24 +83,28 @@ def upload():
 def add_record(user_name, transcribed_audio, sentiment_dict):
     # function to save a user's formatted input and sentiment to the db
     # if (check_new_user(user_name)):
-    create_data={'user_name':user_name,'transcribed_audio': transcribed_audio, 'sentiment': sentiment_dict}
-    db.sentiment_analyzer.insert_one(create_data)
+    create_data = {'user_name': user_name,
+                   'transcribed_audio': transcribed_audio, 'sentiment': sentiment_dict}
+    db.COLLECTION_NAME.insert_one(create_data)
     # else:
     #     #user already exists, we want unique statements
     #     print('user already exists')
     return 'record successfully added for ' + str(user_name)
 
+
 def parse_phrase_from_voice(filename):
     # read the entire audio file
-    #takes audio input and generates a phrase list from it using ML
+    # takes audio input and generates a phrase list from it using ML
     r = sr.Recognizer()
     with sr.AudioFile(filename) as source:
-        audio = r.record(source)  
-    return r.recognize_google(audio)
-    
+        audio = r.record(source)
+    return "hi"
+    # r.recognize_google(audio)
+
+
 def calculate_sentiment(phrase):
     sid_obj = SentimentIntensityAnalyzer()
-    #calculate the sentiment associated with a phrase input
+    # calculate the sentiment associated with a phrase input
     return sid_obj.polarity_scores(phrase)
 
 # def check_new_user(user):
@@ -103,6 +114,7 @@ def calculate_sentiment(phrase):
 #     if len(docs)>=1:
 #         return False
 #     return True
+
 
 if __name__ == "__main__":
     app.run(debug=True)
