@@ -1,6 +1,6 @@
 import pytest
 import sys
-import app
+from ..app import app
 
 
 class Tests:
