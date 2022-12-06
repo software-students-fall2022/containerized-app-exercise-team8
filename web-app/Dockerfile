@@ -14,6 +14,9 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 # by default Docker containers are closed off to the external world
 # Make port 80 available to the world outside this container
 EXPOSE 2001
+
+COPY ./app /app
+
 # Define an environment variable... this will be available to programs running inside the container
 ENV NAME World
 
