@@ -2,6 +2,7 @@
 # Containerized App Exercise
 
 ![Badge](https://github.com/software-students-fall2022/containerized-app-exercise-team8/actions/workflows/build.yaml/badge.svg)
+![Badge](https://github.com/software-students-fall2022/containerized-app-exercise-team8/actions/workflows/machine_learning_client.yml/badge.svg)
 
 ## Welcome to our Sentiment Analysis Tool!
 
